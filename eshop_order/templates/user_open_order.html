@@ -1,0 +1,102 @@
+{% extends 'shared/_MainLayout.html' %}
+{% load static %}
+
+{% block content %}
+    <section id="cart_items">
+        <div class="container">
+            <div class="breadcrumbs">
+                <ol class="breadcrumb">
+                    <li><a href="/">خانـه</a></li>
+                    <li class="active">سبد خرید</li>
+                </ol>
+            </div><!--/breadcrums-->
+            {% if order != None and details|length > 0 %}
+                <div class="table-responsive cart_info">
+                    <table class="table table-condensed">
+                        <thead>
+                        <tr class="cart_menu">
+                            <td class="image">کـالا</td>
+                            <td class="description"></td>
+                            <td class="price">قیمت</td>
+                            <td class="quantity">تعـداد</td>
+                            <td class="total">مجمـوع</td>
+                            <td></td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for detail in details %}
+                            <tr>
+                                <td class="cart_product">
+                                    <a href=""><img src="{{ detail.product.image.url }}" alt=""
+                                                    style="width: 110px; height: 110px"></a>
+                                </td>
+                                <td class="cart_description">
+                                    <h4><a href="">{{ detail.product.title }}</a></h4>
+                                    <p>شناسـه : {{ detail.product.id }}</p>
+                                </td>
+                                <td class="cart_price">
+                                    <p>{{ detail.product.price }} تومان</p>
+                                </td>
+                                <td class="cart_quantity">
+                                    <div class="cart_quantity_button">
+                                        <span>{{ detail.count }}</span>
+                                    </div>
+                                </td>
+                                <td class="cart_total">
+                                    <p class="cart_total_price">{{ detail.get_detail_sum }} تومان</p>
+                                </td>
+                                <td>
+                                    <a href="/remove-order/{{ detail.id }}"><i class="fa fa-times-circle"></i></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="alert alert-warning">
+                    <p>سبد خرید شما خالی است!</p>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+
+    <section id="do_action">
+        <div class="container">
+            <div class="heading">
+                <h3>نهایی کردن سفارش </h3>
+            </div>
+
+            <div class="shopper-informations">
+                <div class="row">
+                    <div class="col-sm-5">
+                        <div class="shopper-info">
+                            <p>اطلاعات خریدار</p>
+                            <form method="post">
+                                {% csrf_token %}
+                                {{ address_form.as_p }}
+                                <button type="submit" class="btn btn-primary">ذخیره</button>
+                            </form>
+                            {% if new_address %}
+                                <h4 class="text-success">آدرس شما با موفقیت ثبت شد</h4>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="total_area">
+                        <ul>
+                            <li>مجمـوع سبـد خریـد <span>{{ total }} تومان</span></li>
+                            <li>هزینـه حمل و نقـل <span>رایـگان</span></li>
+                            <li>مجمـوع <span>{{ total }} تومان</span></li>
+                        </ul>
+                        <a class="btn btn-default check_out" href="/request">پرداخت</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,13 @@
+<a href="{{ product.get_absolute_url }}">
+    <div class="col-sm-4 pull-right">
+        <div class="product-image-wrapper">
+            <div class="single-products">
+                <div class="productinfo text-center">
+                    <img src="{{ product.image.url }}" alt="">
+                    <h4>{{ product.title }}</h4>
+                    <h4 class="text-info">{{ product.price }} تومان</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</a>
